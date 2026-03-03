@@ -1,0 +1,88 @@
+Problem Statement
+
+
+
+Benjamin is managing a product inventory for a multi-store business. Each product has multiple price listings from different stores. Benjamin needs to find the lowest price for each product that is available in more than one store. 
+
+
+
+Your task is to help Benjamin by writing a program to compute these minimum prices.
+
+Input format :
+The first line of input contains an integer n, representing the number of price entries.
+
+Each of the next n lines contains the following space-separated values:
+
+An integer representing the product ID.
+An integer representing the store ID (not used in computation, but helps identify different stores).
+One or more integers representing the prices of the product in that store.
+Output format :
+The output prints a dictionary in the format:
+
+{product_id1: min_price1, product_id2: min_price2, ..., product_idN: min_priceN}
+
+Each key is a product_id that has been listed in more than one store (i.e., has more than one price in total across all entries).
+
+Each value is the minimum price for that product across all stores.
+
+The dictionary is printed using standard Python syntax.
+
+
+
+Important Conditions Reflected in Output:
+
+A product_id will only appear in the output if it has more than one price entry (i.e., len(prices) > 1).
+
+If a product appears in only one line with one price, or if all its prices come from a single line and there is only one price, it is excluded from the output.
+
+The order of keys in the output dictionary will follow the order in which they were first completely formed in product_prices.
+
+
+
+Refer to the sample output for formatting specifications.
+
+Code constraints :
+1 ≤ n ≤ 15
+
+101 ≤ productID ≤ 210
+
+1 ≤ store_number ≤ 3
+
+1 ≤ prices ≤ 5000
+
+Sample test cases :
+Input 1 :
+3
+101 1 1200 1100
+101 2 1150
+201 1 850 800
+Output 1 :
+{101: 1100, 201: 800}
+Input 2 :
+4
+101 1 1300 1250
+101 2 1200
+201 1 900 850
+201 1 600
+Output 2 :
+{101: 1200, 201: 600}
+
+---------------------------------------------------------------------------------------------------------
+
+n = int(input().strip())
+product_prices = {}
+
+for _ in range(n):
+    parts = list(map(int, input().strip().split()))
+    product_id = parts[0]
+    prices = parts[2:]  # skip store ID
+    
+    if product_id in product_prices:
+        product_prices[product_id].extend(prices)
+    else:
+        product_prices[product_id] = prices
+
+# Filter products with more than one price and compute minimum
+result = {pid: min(prices) for pid, prices in product_prices.items() if len(prices) > 1}
+
+print(result)
